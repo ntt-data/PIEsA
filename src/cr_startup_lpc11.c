@@ -1,28 +1,28 @@
 //*****************************************************************************
-//   +--+       
-//   | ++----+   
-//   +-++    |  
-//     |     |  
-//   +-+--+  |   
-//   | +--+--+  
+//   +--+
+//   | ++----+
+//   +-++    |
+//     |     |
+//   +-+--+  |
+//   | +--+--+
 //   +----+    Copyright (c) 2009-10 Code Red Technologies Ltd.
 //
 // Microcontroller Startup code for use with Red Suite
 //
 // Software License Agreement
-// 
-// The software is owned by Code Red Technologies and/or its suppliers, and is 
-// protected under applicable copyright laws.  All rights are reserved.  Any 
-// use in violation of the foregoing restrictions may subject the user to criminal 
-// sanctions under applicable laws, as well as to civil liability for the breach 
+//
+// The software is owned by Code Red Technologies and/or its suppliers, and is
+// protected under applicable copyright laws.  All rights are reserved.  Any
+// use in violation of the foregoing restrictions may subject the user to criminal
+// sanctions under applicable laws, as well as to civil liability for the breach
 // of the terms and conditions of this license.
-// 
+//
 // THIS SOFTWARE IS PROVIDED "AS IS".  NO WARRANTIES, WHETHER EXPRESS, IMPLIED
 // OR STATUTORY, INCLUDING, BUT NOT LIMITED TO, IMPLIED WARRANTIES OF
 // MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE APPLY TO THIS SOFTWARE.
 // USE OF THIS SOFTWARE FOR COMMERCIAL DEVELOPMENT AND/OR EDUCATION IS SUBJECT
 // TO A CURRENT END USER LICENSE AGREEMENT (COMMERCIAL OR EDUCATIONAL) WITH
-// CODE RED TECHNOLOGIES LTD. 
+// CODE RED TECHNOLOGIES LTD.
 //
 //*****************************************************************************
 #if defined (__cplusplus)
@@ -57,7 +57,7 @@ extern "C" {
 //*****************************************************************************
 //
 // Forward declaration of the default handlers. These are aliased.
-// When the application defines a handler (with the same name), this will 
+// When the application defines a handler (with the same name), this will
 // automatically take precedence over these weak definitions
 //
 //*****************************************************************************
@@ -165,7 +165,7 @@ void (* const g_pfnVectors[])(void) = {
     WAKEUP_IRQHandler,                      // PIO0_10 Wakeup
     WAKEUP_IRQHandler,                      // PIO0_11 Wakeup
     WAKEUP_IRQHandler,                      // PIO1_0  Wakeup
-    
+
     CAN_IRQHandler,							// C_CAN Interrupt
     SSP1_IRQHandler, 						// SPI/SSP1 Interrupt
     I2C_IRQHandler,                      	// I2C0
@@ -249,7 +249,7 @@ void ResetISR(void)
 	main();
 #endif
 	//
-	// main() shouldn't return, but if it does, we'll just enter an infinite loop 
+	// main() shouldn't return, but if it does, we'll just enter an infinite loop
 	//
 	while (1) {
 		;
