@@ -20,6 +20,7 @@ VERSION HISTORY:
 Date		  	Version		Author		Short Task Description (specify task ID if available)
 13/03/2018	  	1.0			RBI			Creation of source file and defining the system initialization phase (pins, UART, etc.).
 20/03/2018		1.1			GAN			Added the definitions and macros used for the system initialization.
+22/05/2018	  	1.2			RBI			Added the logic for temperature sensor and switch between states.
 */
 
 #define _SYSTEM_INIT_C_SRC
@@ -82,7 +83,7 @@ Date		  	Version		Author		Short Task Description (specify task ID if available)
     \module     INIT
     \param      Not applicable
     \return     Not applicable
-    \brief      This is the function in charge of initialization the system (pins, communication, ).
+    \brief      This is the function in charge of initialization the system (pins, communication, etc.).
     \remarks    No remarks
         \Requirement(s) :
             SW-COMM-ROT-0001

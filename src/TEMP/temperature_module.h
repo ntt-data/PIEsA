@@ -4,9 +4,9 @@
 **                           *******************                           **
 **                                                                         **
 ** project          : PIEsA                                                **
-** filename         : rotary_module.h                                      **
+** filename         : temperature_module.h                                 **
 ** template version : 1                                                    **
-** date             : 13 March, 2018                                       **
+** date             : 21 May, 2018                                         **
 **                                                                         **
 *****************************************************************************
 **                                                                         **
@@ -18,8 +18,7 @@
 VERSION HISTORY:
 ----------------
 Date		  	Version		Author		Short Task Description (specify task ID if available)
-13/03/2018	  	1.0			RBI			Creation of header file, used in defining the rotary encoder mode functionality.
-20/03/2018		1.1			GAN			Added the definitions and macros used for rotary encoder functionality.
+22/05/2018	  	1.0			RBI			Creation of header file and defining the temperature and switch mode functionality.
 */
 
 #ifndef _TEMPERATURE_MODULE_INCLUDED

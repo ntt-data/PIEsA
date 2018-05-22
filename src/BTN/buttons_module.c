@@ -20,7 +20,7 @@ VERSION HISTORY:
 Date		  	Version		Author		Short Task Description (specify task ID if available)
 13/03/2018	  	1.0			RBI			Creation of source file and mapping the reset button for the counter of rotary encoder.
 20/03/2018		1.1			GAN			Added the definitions and macros used for the reset counter button.
-
+22/05/2018	  	1.2			RBI			Added the logic for temperature sensor and switch between states.
 */
 
 #define _BUTTONS_MODULE_C_SRC
@@ -97,29 +97,31 @@ void Btn_mapping(void)
 }
 
 /*!
-    \name       Btn_modeSelect
+    \name       Btn_modeSelection
     \module     BTN
     \param      Not applicable
-    \return     uint8_t modeSelected
-    \brief      This is the function in charge of mapping the physical buttons present on the BaseBoard.
+    \return     Not applicable
+    \brief      This is the function in charge of handling the mode selection.
     \remarks    No remarks
         \Requirement(s) :
             TO BE ADDED IN FUTURE RELEASE IF NECESSARY
 */
-void Btn_modeSelection()
+void Btn_modeSelection(void)
 {
+	// TO-DO: Add requirements in the function header and body
+	// TO-DO: Rename the variables, according to the established coding/naming rules
 	uint8_t joyState = joystick_read(); // @@@@@@@@@@@@@@@
 
 	if ( joyState != 0 ) // joystick is used
 	{
-		if ( (joyState & JOYSTICK_LEFT) != 0 ) // 0x08
+		if ( (joyState & JOYSTICK_LEFT) != 0 ) // joystick moved/tilted to the left
 	    {
-	    	if (modeSelected > 0) // decrement only if not on first state (0)
+	    	if (modeSelected > 0 /* ROTARY_MODE */) // decrement only if not on first state (0)
 	    	{
 	    		modeSelected--; // go to previous state (ROTARY_MODE = 0)
 	    	}
 	    }
-	    else if ( (joyState & JOYSTICK_RIGHT) != 0 ) // 0x10
+	    else if ( (joyState & JOYSTICK_RIGHT) != 0 ) // joystick moved/tilted to the right
 	    {
 	    	if (modeSelected < 1/*(INVALID_MODE-1)*/) // increment only if not on last valid state (1)
 	    	{

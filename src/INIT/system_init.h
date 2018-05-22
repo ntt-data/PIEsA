@@ -17,9 +17,9 @@
 
 VERSION HISTORY:
 ----------------
-Date		  Version		Author		Short Task Description (specify task ID if available)
-13/03/2018	  1.0			RBI			Creation of header file, used in system initialization phase.
-
+Date		  	Version		Author		Short Task Description (specify task ID if available)
+13/03/2018	  	1.0			RBI			Creation of header file, used in system initialization phase.
+22/05/2018	  	1.1			RBI			Added the logic for temperature sensor and switch between states.
 */
 
 #ifndef _SYSTEM_INIT_INCLUDED

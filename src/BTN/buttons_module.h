@@ -19,7 +19,7 @@ VERSION HISTORY:
 ----------------
 Date		  	Version		Author		Short Task Description (specify task ID if available)
 13/03/2018	  	1.0			RBI			Creation of header file, used in button mapping.
-
+22/05/2018	  	1.1			RBI			Added the logic for temperature sensor and switch between states.
 */
 
 #ifndef _BUTTONS_MODULE_INCLUDED
@@ -46,6 +46,13 @@ Date		  	Version		Author		Short Task Description (specify task ID if available)
 /**                     TYPEDEFS AND STRUCTURES                            **/
 /**                                                                        **/
 /****************************************************************************/
+// TO-DO: Add comment and requirement
+enum runningStates // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+{
+	ROTARY_MODE,
+	TEMPERATURE_MODE,
+	INVALID_MODE
+};
 
 /****************************************************************************/
 /**                                                                        **/

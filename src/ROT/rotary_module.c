@@ -20,7 +20,7 @@ VERSION HISTORY:
 Date		  	Version		Author		Short Task Description (specify task ID if available)
 13/03/2018	  	1.0			RBI			Creation of source file and defining the rotary encoder mode functionality.
 20/03/2018		1.1			GAN			Added the definitions and macros used for rotary encoder functionality.
-
+22/05/2018	  	1.2			RBI			Added the logic for temperature sensor and switch between states.
 */
 
 #define _ROTARY_MODULE_C_SRC
@@ -78,7 +78,6 @@ extern uint8_t prec_modeSelected;
 /**                                                                        **/
 /****************************************************************************/
 static uint8_t Rot_encoderState    =  INIT_STATE_FOR_ROTARY_ENCODER;
-static uint8_t Rot_encoderCnt	   = '0'; // SW-COMM-ROT-0006(1)
 uint8_t Btn_resetEncoderCnt 	   =  CNT_VALUE_AFTER_RESET;
 /****************************************************************************/
 /**                                                                        **/
@@ -109,6 +108,8 @@ uint8_t Btn_resetEncoderCnt 	   =  CNT_VALUE_AFTER_RESET;
 */
 void Rot_modeSelected(void)
 {
+	static uint8_t Rot_encoderCnt	   = '0'; // SW-COMM-ROT-0006(1)
+
 	Rot_encoderState = rotary_read();
 	Btn_resetEncoderCnt = GPIOGetValue(PORT0, SECOND_BIT_POSITION);
 

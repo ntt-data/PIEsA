@@ -19,7 +19,7 @@ VERSION HISTORY:
 ----------------
 Date		  Version		Author		Short Task Description (specify task ID if available)
 13/03/2018	  1.0			RBI			Creation of file and defining the main function
-
+22/05/2018	  1.1			RBI			Added the logic for temperature sensor and switch between states.
 */
 
 #define _MAIN_C_SRC
@@ -44,13 +44,6 @@ Date		  Version		Author		Short Task Description (specify task ID if available)
 /**                     TYPEDEFS AND STRUCTURES                            **/
 /**                                                                        **/
 /****************************************************************************/
-// TO-DO: Add comment and requirement
-enum runningStates // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-{
-	ROTARY_MODE,
-	TEMPERATURE_MODE,
-	INVALID_MODE
-};
 
 /****************************************************************************/
 /**                                                                        **/
@@ -91,7 +84,8 @@ enum runningStates // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
         \Requirement(s) :
             TO BE ADDED IN FUTURE RELEASES IF NECESSARY
 */
-// default init mode is ROTARY_MODE(0)
+
+// default init mode of the system is ROTARY_MODE(0)
 uint8_t modeSelected = ROTARY_MODE; // @@@@@@@@@@@@@@@@@@@@@@@@@
 uint8_t prec_modeSelected = ROTARY_MODE; // @@@@@@@@@@@@@@@@@@@@@@@@@
 int main (void)
@@ -103,7 +97,7 @@ int main (void)
     while(1)
     {
     	Btn_modeSelection(); // @@@@@@@@@@@@@@@@@@@@@@@
-    	// TO DO: Add universal initialization function (clear screen, etc)
+
     	switch (modeSelected)
     	{
     		case ROTARY_MODE:
@@ -120,7 +114,7 @@ int main (void)
     	// TO-DO: add behavior for reset system button in the switch case (future releases)
 
     	// update the value of prec variables
-    	prec_modeSelected = modeSelected;
+    	prec_modeSelected = modeSelected; // rename the variable according to the coding/naming rules
     }
 }
 
