@@ -4,7 +4,7 @@
 **                           *******************                           **
 **                                                                         **
 ** project          : PIEsA                                                **
-** filename         : system_init.c                                        **
+** filename         : rotary_module.c                                      **
 ** template version : 1                                                    **
 ** date             : 13 March, 2018                                       **
 **                                                                         **
@@ -18,29 +18,27 @@
 VERSION HISTORY:
 ----------------
 Date		  	Version		Author		Short Task Description (specify task ID if available)
-13/03/2018	  	1.0			RBI			Creation of source file and defining the system initialization phase (pins, UART, etc.).
-20/03/2018		1.1			GAN			Added the definitions and macros used for the system initialization.
+13/03/2018	  	1.0			RBI			Creation of source file and defining the rotary encoder mode functionality.
+20/03/2018		1.1			GAN			Added the definitions and macros used for rotary encoder functionality.
+
 */
 
-#define _SYSTEM_INIT_C_SRC
+#define _TEMPERATURE_MODULE_C_SRC
 
 /****************************************************************************/
 /**                                                                        **/
 /**                     MODULES USED                                       **/
 /**                                                                        **/
 /****************************************************************************/
-#include "system_init.h"
+#include "temperature_module.h"
+#include "temp.h"
+#include "LPC11xx.h"
 
 /****************************************************************************/
 /**                                                                        **/
 /**                     DEFINITIONS AND MACROS                             **/
 /**                                                                        **/
 /****************************************************************************/
-#define INIT_BAUDRATE 	115200
-#define INIT_TIME     	0
-#define INIT_STEP     	10
-#define STARTING_X    	1
-#define STARTING_Y    	1
 
 /****************************************************************************/
 /**                                                                        **/
@@ -59,7 +57,8 @@ Date		  	Version		Author		Short Task Description (specify task ID if available)
 /**                     EXPORTED VARIABLES                                 **/
 /**                                                                        **/
 /****************************************************************************/
-
+extern uint8_t modeSelected;
+extern uint8_t prec_modeSelected;
 /****************************************************************************/
 /**                                                                        **/
 /**                     GLOBAL VARIABLES                                   **/
@@ -78,38 +77,69 @@ Date		  	Version		Author		Short Task Description (specify task ID if available)
 /**                                                                        **/
 /****************************************************************************/
 /*!
-    \name       Init_system
-    \module     INIT
+    \name       Temp_modeSelected
+    \module     ROT
     \param      Not applicable
     \return     Not applicable
-    \brief      This is the function in charge of initialization the system (pins, communication, ).
+    \brief      This is the function in charge of treating the specific temperature mode behavior.
     \remarks    No remarks
         \Requirement(s) :
-            SW-COMM-ROT-0001
-			SW-COMM-ROT-0009
 */
-void Init_system(void)
+static uint32_t msTicks = 0;
+static uint8_t buf[10];
+
+void SysTick_Handler(void) {
+    msTicks++;
+}
+
+static uint32_t getTicks(void)
 {
-    GPIOInit(); // Initialize GPIO, install the GPIO interrupt handler
-    init_timer32(INIT_TIME, INIT_STEP); // Initialize timer, set timer interval, reset timer, install timer interrupt handler
+    return msTicks;
+}
 
-    UARTInit(INIT_BAUDRATE); // Initialize UART0 port, setup pin select, clock, parity, stop bits, FIFO, etc.
-    UARTSendString((uint8_t*)"System Initialisation !\r\n"); // Send a null-terminated string
+void tempFunc()
+{
+	/* setup sys Tick. Elapsed time is e.g. needed by temperature sensor */
+	SysTick_Config(SystemCoreClock / 1000);
+	if ( !(SysTick->CTRL & (1<<SysTick_CTRL_CLKSOURCE_Msk)) )
+	{
+	      /* When external reference clock is used(CLKSOURCE in
+	      Systick Control and register bit 2 is set to 0), the
+	      SYSTICKCLKDIV must be a non-zero value and 2.5 times
+	      faster than the reference clock.
+	      When core clock, or system AHB clock, is used(CLKSOURCE
+	      in Systick Control and register bit 2 is set to 1), the
+	      SYSTICKCLKDIV has no effect to the SYSTICK frequency. See
+	      more on Systick clock and status register in Cortex-M3
+	      technical Reference Manual. */
+	      LPC_SYSCON->SYSTICKCLKDIV = 0x08;
+	}
+}
 
-    SSPInit(); // SSP port initialization routine
+void Temp_modeSelected(void)
+{
+	static int32_t t = 0;
 
-    // SW-COMM-ROT-0001(1)
-    joystick_init(); // Initialize the Joystick driver @@@@@@@@@@@@@@@@@@@@@@@
-    rotary_init(); // Initialize Rotary switch driver
-    oled_init(); // Initialize the OLED Display
+	if (modeSelected != prec_modeSelected)
+	{
+		oled_clearScreen(OLED_COLOR_WHITE);
+		temp_init (&getTicks);
+		tempFunc();
+		oled_putString(1,1,  (uint8_t*)"Temp   : ", OLED_COLOR_BLACK, OLED_COLOR_WHITE);
+	}
 
-    oled_clearScreen(OLED_COLOR_WHITE); // Clear the entire screen
+	 /* Temperature */
+	 t = temp_read();
 
-    // By default, initialize in rotary mode and display text on screen
-    oled_putString(STARTING_X, STARTING_Y,  (uint8_t*)"Rotary Value:0", OLED_COLOR_BLACK, OLED_COLOR_WHITE); // SW-COMM-ROT-0009(1)
+	 /* output values to OLED display */
 
-    // Mapping the physical buttons present on the BaseBoard.
-    Btn_mapping();
+	 // TO-DO: Display temperature with decimal point: 26.0, 29.4, etc
+	 Oled_intToString(t, buf, 10, 10);
+	 oled_fillRect((1+9*6),1, 80, 8, OLED_COLOR_WHITE);
+	 oled_putString((1+9*6),1, buf, OLED_COLOR_BLACK, OLED_COLOR_WHITE);
+
+
+
 }
 
 /****************************************************************************/

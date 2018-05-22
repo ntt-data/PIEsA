@@ -31,6 +31,7 @@ Date		  Version		Author		Short Task Description (specify task ID if available)
 /****************************************************************************/
 #include "INIT/system_init.h"
 #include "ROT/rotary_module.h"
+#include "TEMP/temperature_module.h"
 
 /****************************************************************************/
 /**                                                                        **/
@@ -43,6 +44,13 @@ Date		  Version		Author		Short Task Description (specify task ID if available)
 /**                     TYPEDEFS AND STRUCTURES                            **/
 /**                                                                        **/
 /****************************************************************************/
+// TO-DO: Add comment and requirement
+enum runningStates // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+{
+	ROTARY_MODE,
+	TEMPERATURE_MODE,
+	INVALID_MODE
+};
 
 /****************************************************************************/
 /**                                                                        **/
@@ -83,16 +91,36 @@ Date		  Version		Author		Short Task Description (specify task ID if available)
         \Requirement(s) :
             TO BE ADDED IN FUTURE RELEASES IF NECESSARY
 */
+// default init mode is ROTARY_MODE(0)
+uint8_t modeSelected = ROTARY_MODE; // @@@@@@@@@@@@@@@@@@@@@@@@@
+uint8_t prec_modeSelected = ROTARY_MODE; // @@@@@@@@@@@@@@@@@@@@@@@@@
 int main (void)
 {
-    // When the system will start, first step is to initialize it by using the Init_system() function
+	// When the system will start, first step is to initialize it by using the Init_system() function
 	Init_system();
 
 	// Main loop, where the mode selection will be implemented in future releases
     while(1)
     {
-    	// mode selection can be made by mapping a button to change between modes (a switch structure)
-    	Rot_modeSelected();
+    	Btn_modeSelection(); // @@@@@@@@@@@@@@@@@@@@@@@
+    	// TO DO: Add universal initialization function (clear screen, etc)
+    	switch (modeSelected)
+    	{
+    		case ROTARY_MODE:
+    			Rot_modeSelected();
+    			break;
+    		case TEMPERATURE_MODE:
+				Temp_modeSelected();
+				break;
+    		default:
+    			// TO-DO: Implement Handler for INVALID_MODE (display text on screen)
+    			break;
+    	}
+
+    	// TO-DO: add behavior for reset system button in the switch case (future releases)
+
+    	// update the value of prec variables
+    	prec_modeSelected = modeSelected;
     }
 }
 

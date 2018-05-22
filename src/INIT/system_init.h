@@ -37,6 +37,7 @@ Date		  Version		Author		Short Task Description (specify task ID if available)
 #include "ssp.h"
 #include "rotary.h"
 #include "oled.h"
+#include "joystick.h"
 #include "../BTN/buttons_module.h"
 
 /****************************************************************************/

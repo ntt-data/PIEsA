@@ -57,12 +57,15 @@ Date		  	Version		Author		Short Task Description (specify task ID if available)
     extern uint8_t Btn_resetEncoderCnt;
 #endif
 
+extern uint8_t modeSelected; // @@@@@@@@@@@@@@@@@@@@@@@@@
+
 /****************************************************************************/
 /**                                                                        **/
 /**                     EXPORTED FUNCTIONS                                 **/
 /**                                                                        **/
 /****************************************************************************/
 void Btn_mapping(void);
+void Btn_modeSelection(void);
 
 #endif /* _BUTTONS_MODULE_INCLUDED */
 
