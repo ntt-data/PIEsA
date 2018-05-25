@@ -59,7 +59,7 @@ Date		  	Version		Author		Short Task Description (specify task ID if available)
 /**                     EXPORTED FUNCTIONS                                 **/
 /**                                                                        **/
 /****************************************************************************/
-void Oled_intToString(int value, uint8_t* pBuf, uint32_t len, uint32_t base);
+void Oled_intToString(int_fast8_t value, uint8_t* pBuf, uint32_t len, uint32_t base);
 
 #endif /* _OLED_MODULE_INCLUDED */
 

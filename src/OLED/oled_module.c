@@ -88,11 +88,11 @@ Date		  	Version		Author		Short Task Description (specify task ID if available)
         \Requirement(s) :
             TO BE ADDED IN FUTURE RELEASE IF NECESSARY
 */
-void Oled_intToString(int value, uint8_t* pBuf, uint32_t len, uint32_t base)
+void Oled_intToString(int_fast8_t value, uint8_t* pBuf, uint32_t len, uint32_t base)
 {
-    static const char* pAscii = "0123456789abcdefghijklmnopqrstuvwxyz";
-    int pos = INIT_POSITION;
-    int tmpValue = value;
+    static const uint8_t* pAscii = "0123456789abcdefghijklmnopqrstuvwxyz";
+    int_fast8_t pos = INIT_POSITION;
+    int_fast8_t tmpValue = value;
 
     // the buffer must not be null and at least have a length of 2 to handle one
     // digit and null-terminator
@@ -118,7 +118,8 @@ void Oled_intToString(int value, uint8_t* pBuf, uint32_t len, uint32_t base)
     }
 
     // calculate the required length of the buffer
-    do {
+    do
+    {
         pos++;
         tmpValue /= base;
     } while(tmpValue > VALUE_ZERO);
@@ -132,7 +133,8 @@ void Oled_intToString(int value, uint8_t* pBuf, uint32_t len, uint32_t base)
 
     pBuf[pos] = '\0';
 
-    do {
+    do
+    {
         pBuf[--pos] = pAscii[value % base];
         value /= base;
     } while(value > VALUE_ZERO);

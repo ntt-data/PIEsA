@@ -29,8 +29,7 @@ Date		  	Version		Author		Short Task Description (specify task ID if available)
 /**                                                                        **/
 /****************************************************************************/
 #include "temperature_module.h"
-#include "temp.h"
-#include "LPC11xx.h"
+
 
 /****************************************************************************/
 /**                                                                        **/
@@ -117,27 +116,29 @@ void tempFunc()
 void Temp_modeSelected(void)
 {
 	static int32_t t = 0;
+	uint8_t temp_decimal = 0;
 
 	if (modeSelected != prec_modeSelected)
 	{
 		oled_clearScreen(OLED_COLOR_WHITE);
 		temp_init (&getTicks);
 		tempFunc();
-		oled_putString(1,1,  (uint8_t*)"Temp   : ", OLED_COLOR_BLACK, OLED_COLOR_WHITE);
+		oled_putString(1,1,  (uint8_t*)"Temperature: ", OLED_COLOR_BLACK, OLED_COLOR_WHITE);
 	}
 
 	 /* Temperature */
 	 t = temp_read();
 
+	 temp_decimal = t % 10;
+
 	 /* output values to OLED display */
-
-	 // TO-DO: Display temperature with decimal point: 26.0, 29.4, etc
-	 Oled_intToString(t, buf, 10, 10);
-	 oled_fillRect((1+9*6),1, 80, 8, OLED_COLOR_WHITE);
-	 oled_putString((1+9*6),1, buf, OLED_COLOR_BLACK, OLED_COLOR_WHITE);
-
-
-
+	 Oled_intToString((t/10), buf, 10, 10);
+	 oled_fillRect((18+9*6),1, 80, 8, OLED_COLOR_WHITE);
+	 oled_putString((18+9*6),1, buf, OLED_COLOR_BLACK, OLED_COLOR_WHITE);
+	 // Display temperature with decimal point: 26.0, 29.4, etc
+	 Oled_intToString(temp_decimal, buf, 10, 10);
+	 oled_putString((30+9*6),1, ".", OLED_COLOR_BLACK, OLED_COLOR_WHITE);
+	 oled_putString((32+9*6),1, buf, OLED_COLOR_BLACK, OLED_COLOR_WHITE);
 }
 
 /****************************************************************************/

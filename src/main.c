@@ -107,6 +107,12 @@ int main (void)
 				Temp_modeSelected();
 				break;
     		default:
+    			if (modeSelected != prec_modeSelected)
+    			{
+    				oled_clearScreen(OLED_COLOR_WHITE);
+    				oled_putString(1,1,  (uint8_t*)"Unsupported", OLED_COLOR_BLACK, OLED_COLOR_WHITE);
+    				oled_putString(1,9,  (uint8_t*)"State !", OLED_COLOR_BLACK, OLED_COLOR_WHITE);
+    			}
     			// TO-DO: Implement Handler for INVALID_MODE (display text on screen)
     			break;
     	}

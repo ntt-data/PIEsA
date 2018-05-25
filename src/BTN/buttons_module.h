@@ -34,7 +34,7 @@ Date		  	Version		Author		Short Task Description (specify task ID if available)
 #include "gpio.h"
 #include "ssp.h"
 #include "mcu_regs.h"
-
+#include "joystick.h"
 /****************************************************************************/
 /**                                                                        **/
 /**                     DEFINITIONS AND MACROS                             **/

@@ -31,8 +31,7 @@ Date		  	Version		Author		Short Task Description (specify task ID if available)
 /**                                                                        **/
 /****************************************************************************/
 #include "buttons_module.h"
-#include "joystick.h"
-#include "oled.h"
+
 
 
 /****************************************************************************/
@@ -112,28 +111,26 @@ void Btn_modeSelection(void)
 	// TO-DO: Rename the variables, according to the established coding/naming rules
 	uint8_t joyState = joystick_read(); // @@@@@@@@@@@@@@@
 
-	if ( joyState != 0 ) // joystick is used
+	if ( joyState != JOYSTICK_NOT_MOVED ) // joystick is used
 	{
-		if ( (joyState & JOYSTICK_LEFT) != 0 ) // joystick moved/tilted to the left
+		if ( (joyState & JOYSTICK_LEFT) != JOYSTICK_NOT_MOVED ) // joystick moved/tilted to the left
 	    {
-	    	if (modeSelected > 0 /* ROTARY_MODE */) // decrement only if not on first state (0)
+	    	if (modeSelected > ROTARY_MODE /* ROTARY_MODE */) // decrement only if not on first state (0)
 	    	{
 	    		modeSelected--; // go to previous state (ROTARY_MODE = 0)
 	    	}
 	    }
-	    else if ( (joyState & JOYSTICK_RIGHT) != 0 ) // joystick moved/tilted to the right
+	    else if ( (joyState & JOYSTICK_RIGHT) != JOYSTICK_NOT_MOVED ) // joystick moved/tilted to the right
 	    {
-	    	if (modeSelected < 1/*(INVALID_MODE-1)*/) // increment only if not on last valid state (1)
+	    	if (modeSelected < INVALID_MODE) /* increment only if not on last valid state (1)*/
 	    	{
 	    		modeSelected++; // go to next state (TEMPERATURE_MODE = 1)
 	    	}
 	    }
 	    else	// (joyState & JOYSTICK_UP) != 0 || (joyState & JOYSTICK_DOWN) != 0 || (joyState & JOYSTICK_CENTER) != 0
 	    {
-	    	// do-nothing
-	    	// joystick used but the direction is not supported
-
-	    	// TO-DO: Implement a handler for INVALID_STATE (message on OLED)
+	    	// Implement a handler for INVALID_STATE (message on OLED)
+	    	modeSelected = INVALID_MODE;
 	    }
 	}
 }

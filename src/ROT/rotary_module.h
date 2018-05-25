@@ -36,6 +36,7 @@ Date		  	Version		Author		Short Task Description (specify task ID if available)
 #include "gpio.h"
 #include "ssp.h"
 #include "../OLED/oled_module.h"
+#include "../BTN/buttons_module.h"
 
 /****************************************************************************/
 /**                                                                        **/

@@ -31,7 +31,7 @@ Date		  	Version		Author		Short Task Description (specify task ID if available)
 /**                                                                        **/
 /****************************************************************************/
 #include "rotary_module.h"
-#include "../BTN/buttons_module.h"
+
 
 /****************************************************************************/
 /**                                                                        **/

@@ -9,11 +9,12 @@
 #define __JOYSTICK_H
 
 
-#define JOYSTICK_CENTER 0x01
-#define JOYSTICK_UP     0x02
-#define JOYSTICK_DOWN   0x04
-#define JOYSTICK_LEFT   0x08
-#define JOYSTICK_RIGHT  0x10
+#define JOYSTICK_NOT_MOVED 0x00
+#define JOYSTICK_CENTER    0x01
+#define JOYSTICK_UP        0x02
+#define JOYSTICK_DOWN      0x04
+#define JOYSTICK_LEFT      0x08
+#define JOYSTICK_RIGHT     0x10
 
 
 void joystick_init (void);

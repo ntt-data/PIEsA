@@ -31,6 +31,8 @@ Date		  	Version		Author		Short Task Description (specify task ID if available)
 /****************************************************************************/
 #include "type.h"
 #include "oled.h"
+#include "temp.h"
+#include "LPC11xx.h"
 /****************************************************************************/
 /**                                                                        **/
 /**                     DEFINITIONS AND MACROS                             **/
