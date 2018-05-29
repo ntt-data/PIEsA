@@ -20,6 +20,7 @@ VERSION HISTORY:
 Date		  Version		Author		Short Task Description (specify task ID if available)
 13/03/2018	  1.0			RBI			Creation of file and defining the main function
 22/05/2018	  1.1			RBI			Added the logic for temperature sensor and switch between states.
+29/05/2018    1.2         GAN         Added the definitions and macros used for the unsupported perspectives.
 */
 
 #define _MAIN_C_SRC
@@ -38,7 +39,9 @@ Date		  Version		Author		Short Task Description (specify task ID if available)
 /**                     DEFINITIONS AND MACROS                             **/
 /**                                                                        **/
 /****************************************************************************/
-
+#define X0                               1
+#define Y0                               1
+#define SECOND_ROW_X                     9
 /****************************************************************************/
 /**                                                                        **/
 /**                     TYPEDEFS AND STRUCTURES                            **/
@@ -110,8 +113,8 @@ int main (void)
     			if (modeSelected != prec_modeSelected)
     			{
     				oled_clearScreen(OLED_COLOR_WHITE);
-    				oled_putString(1,1,  (uint8_t*)"Unsupported", OLED_COLOR_BLACK, OLED_COLOR_WHITE);
-    				oled_putString(1,9,  (uint8_t*)"State !", OLED_COLOR_BLACK, OLED_COLOR_WHITE);
+    				oled_putString(X0,Y0,  (uint8_t*)"Unsupported", OLED_COLOR_BLACK, OLED_COLOR_WHITE);
+    				oled_putString(X0,SECOND_ROW_X,  (uint8_t*)"State !", OLED_COLOR_BLACK, OLED_COLOR_WHITE);
     			}
     			// TO-DO: Implement Handler for INVALID_MODE (display text on screen)
     			break;
