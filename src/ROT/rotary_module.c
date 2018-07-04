@@ -21,6 +21,7 @@ Date		  	Version		Author		Short Task Description (specify task ID if available)
 13/03/2018	  	1.0			RBI			Creation of source file and defining the rotary encoder mode functionality.
 20/03/2018		1.1			GAN			Added the definitions and macros used for rotary encoder functionality.
 22/05/2018	  	1.2			RBI			Added the logic for temperature sensor and switch between states.
+02/07/2018	  	1.3			RBI			Refactoring code, adding comments and requirements ID.
 */
 
 #define _ROTARY_MODULE_C_SRC
@@ -64,14 +65,15 @@ Date		  	Version		Author		Short Task Description (specify task ID if available)
 /**                                                                        **/
 /****************************************************************************/
 static void Rot_printEncoderCntValue(uint8_t p_encoderCnt);
+static void Rot_setPrerequisites(uint8_t p_encoderCnt);
 
 /****************************************************************************/
 /**                                                                        **/
 /**                     EXPORTED VARIABLES                                 **/
 /**                                                                        **/
 /****************************************************************************/
-extern uint8_t modeSelected;
-extern uint8_t prec_modeSelected;
+extern uint8_t Sys_currentMode;
+extern uint8_t Sys_prevMode;
 /****************************************************************************/
 /**                                                                        **/
 /**                     GLOBAL VARIABLES                                   **/
@@ -105,6 +107,7 @@ uint8_t Btn_resetEncoderCnt 	   =  CNT_VALUE_AFTER_RESET;
 			SW-COMM-ROT-0011
 			SW-COMM-ROT-0007
 			SW-COMM-ROT-0005
+			SW-COMM-TEMP-0019
 */
 void Rot_modeSelected(void)
 {
@@ -113,14 +116,8 @@ void Rot_modeSelected(void)
 	Rot_encoderState = rotary_read();
 	Btn_resetEncoderCnt = GPIOGetValue(PORT0, SECOND_BIT_POSITION);
 
-	// init the screen only if the running mode was previous changed
-	if (modeSelected != prec_modeSelected)
-	{
-		oled_clearScreen(OLED_COLOR_WHITE);
-		// By default, initialize in rotary mode and display text on screen
-		oled_putString(1, 1,  (uint8_t*)"Rotary Value:0", OLED_COLOR_BLACK, OLED_COLOR_WHITE); // SW-COMM-ROT-0009(1)
-		Rot_printEncoderCntValue(Rot_encoderCnt);
-	}
+	// When the mode is switched, the system must be prepared for rotary mode
+	Rot_setPrerequisites(Rot_encoderCnt);
 
 	// SW-COMM-ROT-0008(1)
 	if (Btn_resetEncoderCnt == CNT_VALUE_AFTER_RESET ) // rename to button is pressed
@@ -194,6 +191,28 @@ static void Rot_printEncoderCntValue(uint8_t p_encoderCnt)
 
 	/* Print output buffer on OLED Display */
 	oled_putString(X0,Y0, buf, OLED_COLOR_BLACK, OLED_COLOR_WHITE);
+}
+
+/*!
+    \name       Temp_setPrerequisites
+    \module     TEMP
+    \param      Not applicable
+    \return     Not applicable
+    \brief      This is the function in charge of preparing the system for rotary mode.
+    \remarks    No remarks
+        \Requirement(s) :
+        	SW-COMM-ROT-0009
+        	SW-COMM-TEMP-0019
+*/
+static void Rot_setPrerequisites(uint8_t p_encoderCnt)
+{
+	if (Sys_currentMode != Sys_prevMode)
+	{
+		oled_clearScreen(OLED_COLOR_WHITE);
+		// By default, initialize in rotary mode and display text on screen
+		oled_putString(Y0, Y0,  (uint8_t*)"Rotary Value:0", OLED_COLOR_BLACK, OLED_COLOR_WHITE); // SW-COMM-ROT-0009(1)
+		Rot_printEncoderCntValue(p_encoderCnt);
+	}
 }
 
 /****************************************************************************/

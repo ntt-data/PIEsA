@@ -21,6 +21,7 @@ Date		  	Version		Author		Short Task Description (specify task ID if available)
 13/03/2018	  	1.0			RBI			Creation of source file and mapping the reset button for the counter of rotary encoder.
 20/03/2018		1.1			GAN			Added the definitions and macros used for the reset counter button.
 22/05/2018	  	1.2			RBI			Added the logic for temperature sensor and switch between states.
+02/07/2018	  	1.3			RBI			Refactoring code, adding comments and requirements ID.
 */
 
 #define _BUTTONS_MODULE_C_SRC
@@ -103,34 +104,37 @@ void Btn_mapping(void)
     \brief      This is the function in charge of handling the mode selection.
     \remarks    No remarks
         \Requirement(s) :
-            TO BE ADDED IN FUTURE RELEASE IF NECESSARY
+            SW-COMM-TEMP-0013
+            SW-COMM-TEMP-0015
+            SW-COMM-TEMP-0021
+            SW-COMM-TEMP-0022
 */
 void Btn_modeSelection(void)
 {
-	// TO-DO: Add requirements in the function header and body
-	// TO-DO: Rename the variables, according to the established coding/naming rules
-	uint8_t joyState = joystick_read(); // @@@@@@@@@@@@@@@
+	uint8_t Temp_joystickState = joystick_read();
 
-	if ( joyState != JOYSTICK_NOT_MOVED ) // joystick is used
+	if ( Temp_joystickState != JOYSTICK_NOT_MOVED ) // Joystick is used
 	{
-		if ( (joyState & JOYSTICK_LEFT) != JOYSTICK_NOT_MOVED ) // joystick moved/tilted to the left
+		// SW-COMM-TEMP-0013(1)
+		if ( (Temp_joystickState & JOYSTICK_LEFT) != JOYSTICK_NOT_MOVED ) // Joystick moved/tilted to the left
 	    {
-	    	if (modeSelected > ROTARY_MODE /* ROTARY_MODE */) // decrement only if not on first state (0)
+	    	if (Sys_currentMode > ROTARY_MODE) // decrement only if not on first state (0)
 	    	{
-	    		modeSelected--; // go to previous state (ROTARY_MODE = 0)
+	    		// SW-COMM-TEMP-0021(1)
+	    		Sys_currentMode--; // go to previous state (ROTARY_MODE = 0)
 	    	}
-	    }
-	    else if ( (joyState & JOYSTICK_RIGHT) != JOYSTICK_NOT_MOVED ) // joystick moved/tilted to the right
+	    } // SW-COMM-TEMP-0013(1)
+	    else if ( (Temp_joystickState & JOYSTICK_RIGHT) != JOYSTICK_NOT_MOVED ) // Joystick moved/tilted to the right
 	    {
-	    	if (modeSelected < INVALID_MODE) /* increment only if not on last valid state (1)*/
+	    	if (Sys_currentMode < INVALID_MODE) // increment only if not on last valid state (1)
 	    	{
-	    		modeSelected++; // go to next state (TEMPERATURE_MODE = 1)
+	    		// SW-COMM-TEMP-0022(1)
+	    		Sys_currentMode++; // go to next state (TEMPERATURE_MODE = 1)
 	    	}
-	    }
+	    } // SW-COMM-TEMP-0015(1)
 	    else	// (joyState & JOYSTICK_UP) != 0 || (joyState & JOYSTICK_DOWN) != 0 || (joyState & JOYSTICK_CENTER) != 0
 	    {
-	    	// Implement a handler for INVALID_STATE (message on OLED)
-	    	modeSelected = INVALID_MODE;
+	    	Sys_currentMode = INVALID_MODE;
 	    }
 	}
 }

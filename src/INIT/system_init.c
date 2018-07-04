@@ -21,6 +21,7 @@ Date		  	Version		Author		Short Task Description (specify task ID if available)
 13/03/2018	  	1.0			RBI			Creation of source file and defining the system initialization phase (pins, UART, etc.).
 20/03/2018		1.1			GAN			Added the definitions and macros used for the system initialization.
 22/05/2018	  	1.2			RBI			Added the logic for temperature sensor and switch between states.
+02/07/2018	  	1.3			RBI			Refactoring code, adding comments and requirements ID.
 */
 
 #define _SYSTEM_INIT_C_SRC
@@ -88,6 +89,7 @@ Date		  	Version		Author		Short Task Description (specify task ID if available)
         \Requirement(s) :
             SW-COMM-ROT-0001
 			SW-COMM-ROT-0009
+			SW-COMM-TEMP-0012
 */
 void Init_system(void)
 {
@@ -95,13 +97,14 @@ void Init_system(void)
     init_timer32(INIT_TIME, INIT_STEP); // Initialize timer, set timer interval, reset timer, install timer interrupt handler
 
     UARTInit(INIT_BAUDRATE); // Initialize UART0 port, setup pin select, clock, parity, stop bits, FIFO, etc.
-    UARTSendString((uint8_t*)"System Initialisation !\r\n"); // Send a null-terminated string
+    UARTSendString((uint8_t*)"System Initialisation !\r\n"); // Send a test null-terminated string.
 
     SSPInit(); // SSP port initialization routine
 
     // SW-COMM-ROT-0001(1)
-    joystick_init(); // Initialize the Joystick driver @@@@@@@@@@@@@@@@@@@@@@@
     rotary_init(); // Initialize Rotary switch driver
+    // SW-COMM-TEMP-0012(1)
+    joystick_init(); // Initialize the Joystick driver
     oled_init(); // Initialize the OLED Display
 
     oled_clearScreen(OLED_COLOR_WHITE); // Clear the entire screen

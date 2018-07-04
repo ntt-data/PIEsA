@@ -20,7 +20,8 @@ VERSION HISTORY:
 Date		  Version		Author		Short Task Description (specify task ID if available)
 13/03/2018	  1.0			RBI			Creation of file and defining the main function
 22/05/2018	  1.1			RBI			Added the logic for temperature sensor and switch between states.
-29/05/2018    1.2         GAN         Added the definitions and macros used for the unsupported perspectives.
+29/05/2018    1.2           GAN         Added the definitions and macros used for the unsupported perspectives.
+02/07/2018	  1.3			RBI			Refactoring code, adding comments and requirements ID.
 */
 
 #define _MAIN_C_SRC
@@ -41,7 +42,7 @@ Date		  Version		Author		Short Task Description (specify task ID if available)
 /****************************************************************************/
 #define X0                               1
 #define Y0                               1
-#define SECOND_ROW_X                     9
+#define SECOND_ROW_Y                     9
 /****************************************************************************/
 /**                                                                        **/
 /**                     TYPEDEFS AND STRUCTURES                            **/
@@ -65,7 +66,9 @@ Date		  Version		Author		Short Task Description (specify task ID if available)
 /**                     GLOBAL VARIABLES                                   **/
 /**                                                                        **/
 /****************************************************************************/
-
+// SW-COMM-TEMP-0014(1)
+uint8_t Sys_currentMode = ROTARY_MODE; // default mode of the system is ROTARY_MODE(0)
+uint8_t Sys_prevMode 	= ROTARY_MODE;
 /****************************************************************************/
 /**                                                                        **/
 /**                     EXPORTED FUNCTIONS                                 **/
@@ -85,12 +88,9 @@ Date		  Version		Author		Short Task Description (specify task ID if available)
     \brief      This is the function where the program will start executing. Initialization of the system and mode selection will start from here.
     \remarks    No remarks
         \Requirement(s) :
-            TO BE ADDED IN FUTURE RELEASES IF NECESSARY
+            SW-COMM-TEMP-0025
 */
 
-// default init mode of the system is ROTARY_MODE(0)
-uint8_t modeSelected = ROTARY_MODE; // @@@@@@@@@@@@@@@@@@@@@@@@@
-uint8_t prec_modeSelected = ROTARY_MODE; // @@@@@@@@@@@@@@@@@@@@@@@@@
 int main (void)
 {
 	// When the system will start, first step is to initialize it by using the Init_system() function
@@ -99,9 +99,10 @@ int main (void)
 	// Main loop, where the mode selection will be implemented in future releases
     while(1)
     {
-    	Btn_modeSelection(); // @@@@@@@@@@@@@@@@@@@@@@@
+    	// The mode selection is based on the Joystick tilt left/right
+    	Btn_modeSelection();
 
-    	switch (modeSelected)
+    	switch (Sys_currentMode)
     	{
     		case ROTARY_MODE:
     			Rot_modeSelected();
@@ -109,21 +110,21 @@ int main (void)
     		case TEMPERATURE_MODE:
 				Temp_modeSelected();
 				break;
-    		default:
-    			if (modeSelected != prec_modeSelected)
+    		default: // Unsupported Perspective
+    			// SW-COMM-TEMP-0025(1)
+    			if (Sys_currentMode != Sys_prevMode)
     			{
     				oled_clearScreen(OLED_COLOR_WHITE);
     				oled_putString(X0,Y0,  (uint8_t*)"Unsupported", OLED_COLOR_BLACK, OLED_COLOR_WHITE);
-    				oled_putString(X0,SECOND_ROW_X,  (uint8_t*)"State !", OLED_COLOR_BLACK, OLED_COLOR_WHITE);
+    				oled_putString(X0,SECOND_ROW_Y,  (uint8_t*)"State !", OLED_COLOR_BLACK, OLED_COLOR_WHITE);
     			}
-    			// TO-DO: Implement Handler for INVALID_MODE (display text on screen)
     			break;
     	}
 
-    	// TO-DO: add behavior for reset system button in the switch case (future releases)
+    	// TO-DO: add behavior for a reset system button (future releases)
 
-    	// update the value of prec variables
-    	prec_modeSelected = modeSelected; // rename the variable according to the coding/naming rules
+    	// Update the value of previous system mode variable
+    	Sys_prevMode = Sys_currentMode;
     }
 }
 

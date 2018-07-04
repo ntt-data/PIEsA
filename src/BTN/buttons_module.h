@@ -64,7 +64,7 @@ enum runningStates // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
     extern uint8_t Btn_resetEncoderCnt;
 #endif
 
-extern uint8_t modeSelected; // @@@@@@@@@@@@@@@@@@@@@@@@@
+extern uint8_t Sys_currentMode;
 
 /****************************************************************************/
 /**                                                                        **/
