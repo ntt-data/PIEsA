@@ -1,6 +1,6 @@
 Rotary Encoder
 =====================
-This release [R1] contains the functionality of reading data from the rotary encoder
+This release [R2] contains the added functionality of reading data from the temperature sensor
 and display it on the OLED.
 
 The project makes use of code from the following library projects:
